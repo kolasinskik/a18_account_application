@@ -1,0 +1,65 @@
+<aura:component implements="force:hasRecordId,flexipage:AvailableForAllPageTypes">
+	
+	<!-- not needed when implementing force:hasRecordId interface -->
+	<aura:attribute name="recordId" type="String"></aura:attribute>
+
+	<aura:attribute name="accountSimple" type="Map"></aura:attribute>
+	<aura:attribute name="account" type="Map"></aura:attribute>
+	<aura:attribute name="accountError" type="String"></aura:attribute>
+	<aura:attribute name="isNewRecord" type="Boolean" default="true"></aura:attribute>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+
+	<force:recordData 
+		aura:id="recordData"
+		recordId="{!v.recordId}"
+		targetFields="{!v.accountSimple}"
+		targetError="{!v.accountError}"
+		targetRecord="{!v.account}"
+		recordUpdated="{!c.handleRecordUpdated}"
+		mode="EDIT"
+		fields="Name, Phone, Type, Industry, Website, Owner.Name"
+		>
+	</force:recordData>
+
+	<div class="slds-is-relative">
+		<lightning:spinner alternativeText="Loading account details..." variant="brand" size="large" aura:id="spinner"></lightning:spinner>
+		<aura:if isTrue="{!not(empty(v.accountSimple))}">
+			
+			<form class="slds-card" onsubmit="{!c.handleSubmit}">
+				<div class="slds-card__header slds-p-around_none">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__figure">
+							<lightning:icon iconName="standard:account" alternativeText="account"></lightning:icon>
+						</div>
+						<div class="slds-media__body">
+							<lightning:input type="text" value="{!v.accountSimple.Name}" label="Account Name"></lightning:input>
+						</div>
+					</header>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<div class="slds-m-bottom_medium">
+						<lightning:input type="phone" value="{!v.accountSimple.Phone}" label="Phone"></lightning:input>
+					</div>
+					<div class="slds-m-bottom_medium">
+						<lightning:input type="text" value="{!v.accountSimple.Industry}" label="Industry"></lightning:input>
+					</div>
+					<div class="slds-m-bottom_medium">
+						<lightning:input type="text" value="{!v.accountSimple.Website}" label="Website"></lightning:input>
+					</div>
+				</div>
+
+				<div class="slds-card__footer">
+					<lightning:button label="Close Form" onclick="{!c.closeForm}" type="button"></lightning:button>
+					<lightning:button label="Cancel" onclick="{!c.handleCancel}" type="button"></lightning:button>
+					<aura:if isTrue="{!not(empty(v.account.id))}">
+						<lightning:button type="button" label="Delete" variant="destructive" onclick="{!c.handleDelete}"></lightning:button>	
+					</aura:if>
+					<lightning:button type="submit" label="Submit" variant="brand"></lightning:button>
+				</div>
+
+			</form>
+		</aura:if>
+	</div>
+
+</aura:component>

@@ -1,0 +1,18 @@
+.THIS {
+	box-shadow: 0 1px 8px rgba(0,0,0, .12);
+	border-radius: .25rem;
+
+	flex: 1 0 30%;
+}
+
+.THIS.account-updated {
+	background-color: rgba(255,255,0, 0.5);
+}
+
+.THIS .edit-action-wrapper {
+	margin-left: auto;
+}
+
+.THIS .slds-card {
+	background: none;
+}
